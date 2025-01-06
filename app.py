@@ -7,13 +7,13 @@ model = joblib.load("penguin_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
 st.title('🐧 Penguin Species Prediction')
-st.write('Enter the penguin ntot score and other details below to predict its species.')
+st.write('Enter the penguin characteristics below to predict its species.')
 
-# Numerical input for ntot score and other features
-bill_length_mm = st.number_input('Bill Length (mm)', min_value=30.0, max_value=60.0, value=45.0)
-bill_depth_mm = st.number_input('Bill Depth (mm)', min_value=10.0, max_value=25.0, value=15.0)
-flipper_length_mm = st.number_input('Flipper Length (mm)', min_value=170.0, max_value=250.0, value=200.0)
-body_mass_g = st.number_input('Body Mass (g)', min_value=2500.0, max_value=6500.0, value=4000.0)
+# Numerical input for features
+bill_length_mm = st.number_input('Bill Length (mm)', value=45.0, step=0.1)
+bill_depth_mm = st.number_input('Bill Depth (mm)', value=15.0, step=0.1)
+flipper_length_mm = st.number_input('Flipper Length (mm)', value=200.0, step=1.0)
+body_mass_g = st.number_input('Body Mass (g)', value=4000.0, step=1.0)
 sex = st.radio('Sex', ['Male', 'Female'])
 island = st.radio('Island', ['Biscoe', 'Torgersen', 'Dream'])
 
