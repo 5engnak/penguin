@@ -23,13 +23,23 @@ class PenguinModel(nn.Module):
 
 
 # Load pre-trained models and scaler
-sklearn_model = joblib.load("penguin_model.pkl")  # Replace with actual scikit-learn model file path
-scaler = joblib.load("scaler.pkl")  # Replace with actual scaler file path
+try:
+    sklearn_model = joblib.load("penguin_model.pkl")  # Replace with actual scikit-learn model file path
+except FileNotFoundError as e:
+    st.error(f"Error loading the scikit-learn model: {e}")
+    
+try:
+    scaler = joblib.load("scaler.pkl")  # Replace with actual scaler file path
+except FileNotFoundError as e:
+    st.error(f"Error loading the scaler: {e}")
 
 # Load the PyTorch model
-pytorch_model = PenguinModel(input_size=7, output_size=3)
-pytorch_model.load_state_dict(torch.load("penguin_pytorch_model.pth"))  # Replace with PyTorch model path
-pytorch_model.eval()
+try:
+    pytorch_model = PenguinModel(input_size=7, output_size=3)
+    pytorch_model.load_state_dict(torch.load("penguin_pytorch_model.pth"))  # Replace with PyTorch model path
+    pytorch_model.eval()
+except Exception as e:
+    st.error(f"Error loading the PyTorch model: {e}")
 
 # Streamlit app interface
 st.title('🐧 Penguin Species Prediction')
@@ -80,12 +90,14 @@ if st.button('Predict', type='primary'):
             probability = output.numpy()[0]
             prediction = np.argmax(probability)
 
-    # Show results
+    # Map the prediction to the species names
     species_mapping = {0: 'Adelie', 1: 'Chinstrap', 2: 'Gentoo'}  # Assuming these species
-    st.success(f'Predicted Species: {species_mapping.get(prediction, prediction)}')
+    st.success(f'Predicted Species: {species_mapping.get(prediction, "Unknown Species")}')
+    
+    # Show prediction probabilities
     st.write('Prediction Probabilities:')
     for species, prob in zip(species_mapping.values(), probability):
-        st.progress(float(prob))  # Convert to Python float
+        st.progress(float(prob))  # Convert to Python float for progress bar
         st.write(f'{species}: {float(prob):.2%}')
 
     # Display user input
