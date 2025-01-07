@@ -84,4 +84,4 @@ accuracy = accuracy_score(y_test_tensor.numpy(), predicted.numpy())
 print(f'Accuracy on test set: {accuracy * 100:.2f}%')
 
 # Save the scaler
-joblib.dump(scaler, 'scaler.pkl')
+joblib.dump(scaler, 'scaler1.pkl')
